@@ -24,7 +24,7 @@ const Index = () => {
         </div>
 
         {/* Feature Carousel - Right */}
-        <div className="lg:w-1/2 min-h-[520px]">
+        <div className="lg:w-1/2">
           <FeatureCarousel />
         </div>
       </main>
