@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Sparkles } from "lucide-react";
 import FeatureCarousel from "@/components/FeatureCarousel";
 import Footer from "@/components/Footer";
 
@@ -17,7 +18,8 @@ const Index = () => {
             Slash legal bills, navigate compliance, and manage all legal work in one place — including connections to vetted law firms when you need them. Move faster, spend less, stay protected — without the overhead.
           </p>
           <div>
-            <Button size="lg" className="text-sm font-medium px-8">
+            <Button size="lg" className="text-sm font-bold px-8">
+              <Sparkles className="size-4" />
               Join the waitlist
             </Button>
           </div>
