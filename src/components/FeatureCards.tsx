@@ -124,10 +124,8 @@ const TimelineCard = () => {
 };
 
 const CounselCard = () => {
-  const firms = [
+  const seedFirms = [
     {
-      matter: "Seed financing documents",
-      stage: "Pre-seed",
       firm: "Chen & Partners",
       fit: "100+ Seed deals, avg. $12K all-in",
       rating: 5.0,
@@ -135,14 +133,15 @@ const CounselCard = () => {
       action: "request intro",
     },
     {
-      matter: "Seed financing documents",
-      stage: "Pre-seed",
       firm: "Morrison & Lee LLP",
       fit: "85 Seed deals, 40 Series A, avg. $16K all-in",
       rating: 4.5,
       review: "Strategic guidance, can grow with you",
       action: "request intro",
     },
+  ];
+
+  const otherFirms = [
     {
       matter: "Employment agreements (5 hires)",
       stage: "Pre-seed, 8 employees",
@@ -165,6 +164,20 @@ const CounselCard = () => {
     );
   };
 
+  const renderFirmEntry = (f: { firm: string; fit: string; rating: number; review: string; action: string }) => (
+    <div key={f.firm}>
+      <p className="text-xs text-muted-foreground mt-2">Firm match: <span className="text-card-foreground font-medium">{f.firm}</span></p>
+      <p className="text-xs text-primary/80 bg-primary/5 rounded px-2 py-1 mt-1.5">{f.fit}</p>
+      <div className="flex items-center justify-between mt-2.5">
+        <div className="flex flex-col">
+          {renderStars(f.rating)}
+          <span className="text-xs text-muted-foreground italic mt-0.5">"{f.review}"</span>
+        </div>
+        <span className="text-xs font-medium text-primary cursor-pointer hover:underline">{f.action}</span>
+      </div>
+    </div>
+  );
+
   return (
     <div className="h-full flex flex-col gap-4 p-6">
       <div className="flex items-start gap-3">
@@ -179,21 +192,18 @@ const CounselCard = () => {
         </div>
       </div>
       <div className="flex flex-col gap-3 mt-1">
-        {firms.map((f, i) => (
+        {/* Seed financing card with multiple firms */}
+        <div className="bg-card rounded-lg p-4 shadow-sm border border-border/50">
+          <span className="text-xs font-medium bg-savings text-savings-foreground px-2.5 py-0.5 rounded-full">Pre-seed</span>
+          <p className="font-semibold text-sm text-card-foreground mt-2">Seed financing documents</p>
+          {seedFirms.map(renderFirmEntry)}
+        </div>
+        {/* Other matters */}
+        {otherFirms.map((f, i) => (
           <div key={i} className="bg-card rounded-lg p-4 shadow-sm border border-border/50">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-medium bg-savings text-savings-foreground px-2.5 py-0.5 rounded-full">{f.stage}</span>
-            </div>
+            <span className="text-xs font-medium bg-savings text-savings-foreground px-2.5 py-0.5 rounded-full">{f.stage}</span>
             <p className="font-semibold text-sm text-card-foreground mt-2">{f.matter}</p>
-            <p className="text-xs text-muted-foreground mt-0.5">Firm match: <span className="text-card-foreground font-medium">{f.firm}</span></p>
-            <p className="text-xs text-primary/80 bg-primary/5 rounded px-2 py-1 mt-1.5">{f.fit}</p>
-            <div className="flex items-center justify-between mt-2.5">
-              <div className="flex flex-col">
-                {renderStars(f.rating)}
-                <span className="text-xs text-muted-foreground italic mt-0.5">"{f.review}"</span>
-              </div>
-              <span className="text-xs font-medium text-primary cursor-pointer hover:underline">{f.action}</span>
-            </div>
+            {renderFirmEntry(f)}
           </div>
         ))}
       </div>
