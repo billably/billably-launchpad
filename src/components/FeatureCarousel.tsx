@@ -14,11 +14,11 @@ const FeatureCarousel = () => {
   ];
 
   return (
-    <div className="overflow-hidden h-full" ref={emblaRef}>
-      <div className="flex h-full">
+    <div className="overflow-hidden" ref={emblaRef}>
+      <div className="flex">
         {cards.map((card, i) => (
-          <div key={i} className="flex-[0_0_100%] min-w-0 h-full">
-            <div className="glass-card rounded-xl h-full overflow-y-auto">
+          <div key={i} className="flex-[0_0_100%] min-w-0">
+            <div className="glass-card rounded-xl overflow-y-auto">
               {card}
             </div>
           </div>
