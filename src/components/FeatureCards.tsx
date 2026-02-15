@@ -135,6 +135,15 @@ const CounselCard = () => {
       action: "request intro",
     },
     {
+      matter: "Seed financing documents",
+      stage: "Pre-seed",
+      firm: "Morrison & Lee LLP",
+      fit: "85 Seed deals, 40 Series A, avg. $16K all-in",
+      rating: 4.5,
+      review: "Strategic guidance, can grow with you",
+      action: "request intro",
+    },
+    {
       matter: "Employment agreements (5 hires)",
       stage: "Pre-seed, 8 employees",
       firm: "Prakash Legal",
