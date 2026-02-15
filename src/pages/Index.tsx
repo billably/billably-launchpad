@@ -18,9 +18,9 @@ const Index = () => {
             Slash legal bills, navigate compliance, and manage all legal work in one place — including connections to vetted law firms when you need them. Move faster, spend less, stay protected — without the overhead.
           </p>
           <div>
-            <Button size="lg" className="text-sm font-bold px-8">
-              <Sparkles className="size-4" />
+            <Button size="lg" className="text-base font-bold px-8">
               Join the waitlist
+              <Sparkles className="size-4" />
             </Button>
           </div>
         </div>
