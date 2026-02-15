@@ -8,7 +8,7 @@ const Index = () => {
       {/* Main content */}
       <main className="flex-1 flex flex-col lg:flex-row container max-w-6xl mx-auto px-6 py-12 lg:py-20 gap-10 lg:gap-12">
         {/* Hero - Left */}
-          <div className="flex flex-col justify-center lg:w-1/2 gap-6">
+          <div className="flex flex-col justify-center lg:w-1/2 gap-6 font-display">
           <h1 className="text-4xl lg:text-5xl font-semibold gradient-text leading-tight mb-6">billably</h1>
           <h2 className="text-xl lg:text-2xl font-semibold text-foreground leading-snug">
             AI-powered legal operations platform designed for founders
