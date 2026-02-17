@@ -66,7 +66,7 @@ const WaitlistForm = () => {
   return (
     <section id="waitlist" className="py-20 px-6">
       <div className="max-w-[600px] mx-auto bg-card border border-border shadow-2xl rounded-xl p-8 lg:p-10">
-        <div className="text-center mb-8">
+        <div className="text-center mb-12 lg:mb-16">
           <h3 className="text-2xl lg:text-3xl font-bold text-foreground font-display">
             Request early access
           </h3>
