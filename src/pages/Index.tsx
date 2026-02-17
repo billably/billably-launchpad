@@ -63,7 +63,7 @@ const Index = () => {
       {/* Bottom section — deep background */}
       <div className="bg-surface-deep flex-1 relative">
         {/* Waitlist card floating over the split */}
-        <div className="relative -mt-24 lg:-mt-40 z-10">
+        <div className="relative -mt-32 lg:-mt-48 z-10">
           <WaitlistForm />
         </div>
 
