@@ -29,7 +29,7 @@ const BillAnalysisCard = () => {
           <Receipt className="w-5 h-5 text-primary-foreground" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-card-foreground">Stop Overpaying for Legal Work</h3>
+          <h3 className="text-lg font-semibold text-card-foreground font-inter tracking-normal">Stop Overpaying for Legal Work</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Instantly analyze legal bills, flag inflated time entries, and get AI-generated language you can send directly to your law firm.
           </p>
@@ -92,7 +92,7 @@ const TimelineCard = () => {
           <Map className="w-5 h-5 text-primary-foreground" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-card-foreground">Stay Ahead of Your Legal Timeline</h3>
+          <h3 className="text-lg font-semibold text-card-foreground font-inter tracking-normal">Stay Ahead of Your Legal Timeline</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Personalized compliance roadmap with key deadlines, cost estimates, and direct connections to counsel.
           </p>
@@ -185,7 +185,7 @@ const CounselCard = () => {
           <Handshake className="w-5 h-5 text-primary-foreground" />
         </div>
         <div>
-          <h3 className="text-lg font-semibold text-card-foreground">Find the Right Counsel</h3>
+          <h3 className="text-lg font-semibold text-card-foreground font-inter tracking-normal">Find the Right Counsel</h3>
           <p className="text-sm text-muted-foreground mt-1">
             Connect with vetted counsel who understand startups, with transparent pricing and proven track records at your stage.
           </p>

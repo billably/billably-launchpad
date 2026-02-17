@@ -16,6 +16,7 @@ export default {
       fontFamily: {
         display: ['"Poppins"', 'sans-serif'],
         heading: ['"Sora"', 'sans-serif'],
+        inter: ['"Inter"', 'sans-serif'],
       },
       colors: {
         border: "hsl(var(--border))",
