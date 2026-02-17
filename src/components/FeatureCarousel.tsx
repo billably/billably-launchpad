@@ -18,7 +18,7 @@ const FeatureCarousel = () => {
       <div className="flex">
         {cards.map((card, i) => (
           <div key={i} className="flex-[0_0_100%] min-w-0">
-            <div className="glass-card rounded-xl overflow-y-auto">
+            <div className="glass-card rounded-xl overflow-y-auto font-inter" style={{ lineHeight: '1.5' }}>
               {card}
             </div>
           </div>
