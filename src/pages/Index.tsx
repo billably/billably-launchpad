@@ -22,10 +22,9 @@ const Index = () => {
         {/* Hero */}
         <main className="flex flex-col lg:flex-row container max-w-6xl mx-auto px-6 pt-4 pb-32 lg:pb-40 gap-10 lg:gap-12">
           {/* Hero - Left */}
-          <div className="flex flex-col justify-center lg:w-1/2 gap-6 font-display">
+          <div className="flex flex-col justify-center lg:w-1/2 gap-6">
             <h1
-              className="text-4xl lg:text-5xl font-extrabold gradient-text leading-tight mb-6"
-              style={{ fontFamily: "'Poppins', sans-serif" }}
+              className="text-4xl lg:text-5xl font-black gradient-text leading-tight mb-6 font-display"
             >
               billably
             </h1>
