@@ -70,7 +70,7 @@ const WaitlistForm = () => {
     <section id="waitlist" className="py-20 px-6">
       <div className="max-w-[600px] mx-auto bg-card border border-border shadow-2xl rounded-xl p-8 lg:p-10">
         <div className="text-center mb-12 lg:mb-16">
-          <h3 className="text-2xl lg:text-3xl font-bold font-display uppercase tracking-wide">
+          <h3 className="text-2xl lg:text-3xl font-bold uppercase tracking-wide font-heading" style={{ letterSpacing: '-0.03em' }}>
             <span className="text-primary">Join</span>{" "}
             <span className="text-foreground">our waiting list</span>
           </h3>
@@ -79,7 +79,7 @@ const WaitlistForm = () => {
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-6">
             <div className="space-y-1.5">
-              <Label htmlFor="name" className="uppercase text-xs tracking-wider text-muted-foreground font-medium">
+              <Label htmlFor="name" className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">
                 Name
               </Label>
               <Input
@@ -95,7 +95,7 @@ const WaitlistForm = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="email" className="uppercase text-xs tracking-wider text-muted-foreground font-medium">
+              <Label htmlFor="email" className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">
                 Email
               </Label>
               <Input
@@ -112,7 +112,7 @@ const WaitlistForm = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="company" className="uppercase text-xs tracking-wider text-muted-foreground font-medium">
+              <Label htmlFor="company" className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">
                 Company Name
               </Label>
               <Input
@@ -128,7 +128,7 @@ const WaitlistForm = () => {
             </div>
 
             <div className="space-y-1.5">
-              <Label htmlFor="website" className="uppercase text-xs tracking-wider text-muted-foreground font-medium">
+              <Label htmlFor="website" className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">
                 Company Website
               </Label>
               <Input
@@ -142,7 +142,7 @@ const WaitlistForm = () => {
           </div>
 
           <div className="space-y-1.5">
-            <Label className="uppercase text-xs tracking-wider text-muted-foreground font-medium">
+            <Label className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">
               Company Stage
             </Label>
             <Select
