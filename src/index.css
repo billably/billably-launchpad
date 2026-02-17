@@ -43,8 +43,8 @@
     --glass: 0 0% 100% / 0.7;
     --glass-border: 0 0% 100% / 0.5;
 
-    --surface-deep: 224 30% 12%;
-    --surface-deep-foreground: 220 20% 85%;
+    --surface-deep: 224 20% 88%;
+    --surface-deep-foreground: 222 47% 11%;
 
     --savings: 210 100% 95%;
     --savings-foreground: 228 76% 55%;
@@ -97,7 +97,7 @@
     --glass: 224 25% 12% / 0.7;
     --glass-border: 224 25% 20% / 0.5;
 
-    --surface-deep: 224 30% 6%;
+    --surface-deep: 224 25% 10%;
     --surface-deep-foreground: 220 20% 80%;
 
     --savings: 228 50% 15%;
