@@ -67,13 +67,9 @@ const WaitlistForm = () => {
     <section id="waitlist" className="py-20 px-6">
       <div className="max-w-[600px] mx-auto bg-card border border-border shadow-2xl rounded-xl p-8 lg:p-10">
         <div className="text-center mb-8">
-          <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
+          <h3 className="text-2xl lg:text-3xl font-bold text-foreground font-display">
             Request early access
           </h3>
-          <p className="text-muted-foreground text-sm">
-            We're handpicking our first 100 customers. Share your details and
-            we'll be in touch.
-          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
