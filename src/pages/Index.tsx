@@ -13,7 +13,7 @@ const Index = () => {
         <header className="container max-w-6xl mx-auto px-6 py-5 flex justify-end">
           <a
             href="/login"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-foreground border border-border rounded-lg px-4 py-2 hover:bg-accent transition-colors"
           >
             Log in
           </a>
