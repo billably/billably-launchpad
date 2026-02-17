@@ -68,11 +68,11 @@ const WaitlistForm = () => {
       <div className="max-w-[600px] mx-auto glass-card rounded-xl p-8 lg:p-10">
         <div className="text-center mb-8">
           <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
-            Get early access
+            Request early access
           </h3>
           <p className="text-muted-foreground text-sm">
-            Join 500+ companies on the waitlist. We'll send early access details
-            within 24 hours.
+            We're handpicking our first 100 customers. Share your details and
+            we'll be in touch.
           </p>
         </div>
 
