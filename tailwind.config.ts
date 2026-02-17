@@ -62,6 +62,10 @@ export default {
           DEFAULT: "hsl(var(--savings))",
           foreground: "hsl(var(--savings-foreground))",
         },
+        "surface-deep": {
+          DEFAULT: "hsl(var(--surface-deep))",
+          foreground: "hsl(var(--surface-deep-foreground))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",

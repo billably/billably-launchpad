@@ -6,40 +6,70 @@ import WaitlistForm from "@/components/WaitlistForm";
 
 const Index = () => {
   return (
-    <div className="flex flex-col min-h-screen bg-background">
-      {/* Main content */}
-      <main className="flex-1 flex flex-col lg:flex-row container max-w-6xl mx-auto px-6 py-12 lg:py-20 gap-10 lg:gap-12">
-        {/* Hero - Left */}
-          <div className="flex flex-col justify-center lg:w-1/2 gap-6 font-display lg:-mt-[7rem]">
-          <h1 className="text-4xl lg:text-5xl font-extrabold gradient-text leading-tight mb-6" style={{ fontFamily: "'Poppins', sans-serif" }}>billably</h1>
-          <h2 className="text-xl lg:text-2xl font-semibold text-foreground leading-snug">
-            AI-powered legal operations platform designed for founders
-          </h2>
-          <p className="text-base text-muted-foreground leading-relaxed max-w-lg">
-            Slash legal bills, navigate compliance, and manage all legal work in one place — including connections to vetted law firms when you need them. Move faster, spend less, stay protected — without the overhead.
-          </p>
-          <div>
-            <Button
-              size="lg"
-              className="text-base font-bold px-8"
-              onClick={() =>
-                document.getElementById("waitlist")?.scrollIntoView({ behavior: "smooth" })
-              }
+    <div className="flex flex-col min-h-screen">
+      {/* Top section — light background */}
+      <div className="bg-background relative">
+        {/* Login link */}
+        <header className="container max-w-6xl mx-auto px-6 py-5 flex justify-end">
+          <a
+            href="/login"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+          >
+            Log in
+          </a>
+        </header>
+
+        {/* Hero */}
+        <main className="flex flex-col lg:flex-row container max-w-6xl mx-auto px-6 pt-4 pb-32 lg:pb-40 gap-10 lg:gap-12">
+          {/* Hero - Left */}
+          <div className="flex flex-col justify-center lg:w-1/2 gap-6 font-display">
+            <h1
+              className="text-4xl lg:text-5xl font-extrabold gradient-text leading-tight mb-6"
+              style={{ fontFamily: "'Poppins', sans-serif" }}
             >
-              Join the waitlist
-              <Sparkles className="size-4" />
-            </Button>
+              billably
+            </h1>
+            <h2 className="text-xl lg:text-2xl font-semibold text-foreground leading-snug">
+              AI-powered legal operations platform designed for founders
+            </h2>
+            <p className="text-base text-muted-foreground leading-relaxed max-w-lg">
+              Slash legal bills, navigate compliance, and manage all legal work
+              in one place — including connections to vetted law firms when you
+              need them. Move faster, spend less, stay protected — without the
+              overhead.
+            </p>
+            <div>
+              <Button
+                size="lg"
+                className="text-base font-bold px-8"
+                onClick={() =>
+                  document
+                    .getElementById("waitlist")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+              >
+                Join the waitlist
+                <Sparkles className="size-4" />
+              </Button>
+            </div>
           </div>
+
+          {/* Feature Carousel - Right */}
+          <div className="lg:w-1/2">
+            <FeatureCarousel />
+          </div>
+        </main>
+      </div>
+
+      {/* Bottom section — deep background */}
+      <div className="bg-surface-deep flex-1 relative">
+        {/* Waitlist card floating over the split */}
+        <div className="relative -mt-24 lg:-mt-32 z-10">
+          <WaitlistForm />
         </div>
 
-        {/* Feature Carousel - Right */}
-        <div className="lg:w-1/2">
-          <FeatureCarousel />
-        </div>
-      </main>
-
-      <WaitlistForm />
-      <Footer />
+        <Footer />
+      </div>
     </div>
   );
 };
