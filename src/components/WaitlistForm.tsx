@@ -49,8 +49,8 @@ const WaitlistForm = () => {
 
   if (submitted) {
     return (
-      <section id="waitlist" className="py-20 px-6 bg-muted/50">
-        <div className="max-w-[500px] mx-auto text-center space-y-4">
+      <section id="waitlist" className="py-20 px-6">
+        <div className="max-w-[600px] mx-auto glass-card rounded-xl p-10 text-center space-y-4">
           <CheckCircle2 className="size-12 text-primary mx-auto" />
           <h3 className="text-2xl font-bold text-foreground">
             Thanks for joining!
@@ -64,9 +64,9 @@ const WaitlistForm = () => {
   }
 
   return (
-    <section id="waitlist" className="py-20 px-6 bg-muted/50">
-      <div className="max-w-[500px] mx-auto">
-        <div className="text-center mb-10">
+    <section id="waitlist" className="py-20 px-6">
+      <div className="max-w-[600px] mx-auto glass-card rounded-xl p-8 lg:p-10">
+        <div className="text-center mb-8">
           <h3 className="text-2xl lg:text-3xl font-bold text-foreground mb-3">
             Get early access
           </h3>
@@ -77,54 +77,56 @@ const WaitlistForm = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
-          <div className="space-y-1.5">
-            <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              value={form.name}
-              onChange={(e) => update("name", e.target.value)}
-              placeholder="Your name"
-            />
-            {errors.name && (
-              <p className="text-sm text-destructive">{errors.name}</p>
-            )}
-          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-5">
+            <div className="space-y-1.5">
+              <Label htmlFor="name">Name</Label>
+              <Input
+                id="name"
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                placeholder="Your name"
+              />
+              {errors.name && (
+                <p className="text-sm text-destructive">{errors.name}</p>
+              )}
+            </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={form.email}
-              onChange={(e) => update("email", e.target.value)}
-              placeholder="you@company.com"
-            />
-            {errors.email && (
-              <p className="text-sm text-destructive">{errors.email}</p>
-            )}
-          </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                value={form.email}
+                onChange={(e) => update("email", e.target.value)}
+                placeholder="you@company.com"
+              />
+              {errors.email && (
+                <p className="text-sm text-destructive">{errors.email}</p>
+              )}
+            </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="company">Company Name</Label>
-            <Input
-              id="company"
-              value={form.company}
-              onChange={(e) => update("company", e.target.value)}
-              placeholder="Company name"
-            />
-            {errors.company && (
-              <p className="text-sm text-destructive">{errors.company}</p>
-            )}
-          </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="company">Company Name</Label>
+              <Input
+                id="company"
+                value={form.company}
+                onChange={(e) => update("company", e.target.value)}
+                placeholder="Company name"
+              />
+              {errors.company && (
+                <p className="text-sm text-destructive">{errors.company}</p>
+              )}
+            </div>
 
-          <div className="space-y-1.5">
-            <Label htmlFor="website">Company Website</Label>
-            <Input
-              id="website"
-              value={form.website}
-              onChange={(e) => update("website", e.target.value)}
-              placeholder="yourcompany.com"
-            />
+            <div className="space-y-1.5">
+              <Label htmlFor="website">Company Website</Label>
+              <Input
+                id="website"
+                value={form.website}
+                onChange={(e) => update("website", e.target.value)}
+                placeholder="yourcompany.com"
+              />
+            </div>
           </div>
 
           <div className="space-y-1.5">
