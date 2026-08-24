@@ -11,8 +11,12 @@ import {
 } from "@/components/ui/select";
 import { Sparkles, CheckCircle2 } from "lucide-react";
 
+const API_URL = import.meta.env.VITE_WAITLIST_API_URL ?? ''
+
 const WaitlistForm = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState('');
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [form, setForm] = useState({
     name: "",
@@ -33,12 +37,30 @@ const WaitlistForm = () => {
     return errs;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs = validate();
     setErrors(errs);
-    if (Object.keys(errs).length === 0) {
+    if (Object.keys(errs).length > 0) return;
+
+    setLoading(true);
+    setServerError('');
+    try {
+      const res = await fetch(`${API_URL}/waitlist`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setServerError((data as { error?: string }).error ?? 'Something went wrong. Please try again.');
+        return;
+      }
       setSubmitted(true);
+    } catch {
+      setServerError('Could not connect. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -164,9 +186,12 @@ const WaitlistForm = () => {
             )}
           </div>
 
-          <Button type="submit" size="lg" className="w-full text-base font-bold uppercase tracking-wider mt-4">
-            Request early access
-            <Sparkles className="size-4" />
+          {serverError && (
+            <p className="text-sm text-destructive text-center">{serverError}</p>
+          )}
+          <Button type="submit" size="lg" disabled={loading} className="w-full text-base font-bold uppercase tracking-wider mt-4">
+            {loading ? 'Submitting…' : 'Request early access'}
+            {!loading && <Sparkles className="size-4" />}
           </Button>
         </form>
       </div>
