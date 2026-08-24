@@ -56,31 +56,41 @@ app.post('/waitlist', async (req, res) => {
 
     // Only send confirmation email for new signups
     if (result.rowCount > 0 && RESEND_API_KEY) {
-      fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: FROM_EMAIL,
-          to: cleanEmail,
-          subject: "You're on the Billably waitlist",
-          html: `
-            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px; color: #1a1a2e;">
-              <p style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">billably</p>
-              <p style="font-size: 16px; font-weight: 600; margin: 0 0 20px; color: #1a1a2e;">You're on the list, ${cleanName}.</p>
-              <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 20px;">
-                Thanks for signing up for early access to Billably — AI-powered legal operations for founders.
-                We'll reach out as we open up spots.
-              </p>
-              <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0;">
-                — The Billably team
-              </p>
-            </div>
-          `,
-        }),
-      }).catch(err => console.error('Resend error:', err))
+      try {
+        const emailRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: FROM_EMAIL,
+            to: cleanEmail,
+            subject: "You're on the Billably waitlist",
+            html: `
+              <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px; color: #1a1a2e;">
+                <p style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">billably</p>
+                <p style="font-size: 16px; font-weight: 600; margin: 0 0 20px; color: #1a1a2e;">You're on the list, ${cleanName}.</p>
+                <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 20px;">
+                  Thanks for signing up for early access to Billably — AI-powered legal operations for founders.
+                  We'll reach out as we open up spots.
+                </p>
+                <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0;">
+                  — The Billably team
+                </p>
+              </div>
+            `,
+          }),
+        })
+        if (!emailRes.ok) {
+          const body = await emailRes.text()
+          console.error('Resend error:', emailRes.status, body)
+        } else {
+          console.log('Confirmation email sent to', cleanEmail)
+        }
+      } catch (err) {
+        console.error('Resend fetch error:', err)
+      }
     }
 
     return res.json({ ok: true })
