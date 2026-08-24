@@ -1,5 +1,6 @@
 const express = require('express')
 const { Pool } = require('pg')
+const { Resend } = require('resend')
 
 const app = express()
 app.use(express.json())
@@ -26,6 +27,9 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || '',
 })
 
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+const FROM_EMAIL = process.env.FROM_EMAIL || 'Billably <onboarding@resend.dev>'
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 app.post('/waitlist', async (req, res) => {
@@ -38,14 +42,41 @@ app.post('/waitlist', async (req, res) => {
     return res.status(400).json({ error: 'Invalid email address' })
   }
 
+  const cleanEmail = email.trim().toLowerCase()
+  const cleanName = name.trim()
+
   const client = await pool.connect()
   try {
-    await client.query(
+    const result = await client.query(
       `INSERT INTO identity.waitlist_signups (name, email, company, website, stage)
        VALUES ($1, $2, $3, $4, $5)
-       ON CONFLICT (email) DO NOTHING`,
-      [name.trim(), email.trim().toLowerCase(), company.trim(), website?.trim() || null, stage]
+       ON CONFLICT (email) DO NOTHING
+       RETURNING signup_id`,
+      [cleanName, cleanEmail, company.trim(), website?.trim() || null, stage]
     )
+
+    // Only send confirmation email for new signups
+    if (result.rowCount > 0 && resend) {
+      resend.emails.send({
+        from: FROM_EMAIL,
+        to: cleanEmail,
+        subject: "You're on the Billably waitlist",
+        html: `
+          <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px; color: #1a1a2e;">
+            <p style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">billably</p>
+            <p style="font-size: 16px; font-weight: 600; margin: 0 0 20px; color: #1a1a2e;">You're on the list, ${cleanName}.</p>
+            <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 20px;">
+              Thanks for signing up for early access to Billably — AI-powered legal operations for founders.
+              We'll reach out as we open up spots.
+            </p>
+            <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0;">
+              — The Billably team
+            </p>
+          </div>
+        `,
+      }).catch(err => console.error('Resend error:', err))
+    }
+
     return res.json({ ok: true })
   } catch (err) {
     console.error('Waitlist insert error:', err)
