@@ -1,6 +1,5 @@
 const express = require('express')
 const { Pool } = require('pg')
-const { Resend } = require('resend')
 
 const app = express()
 app.use(express.json())
@@ -27,7 +26,7 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD || '',
 })
 
-const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
+const RESEND_API_KEY = process.env.RESEND_API_KEY || ''
 const FROM_EMAIL = process.env.FROM_EMAIL || 'Billably <onboarding@resend.dev>'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -56,24 +55,31 @@ app.post('/waitlist', async (req, res) => {
     )
 
     // Only send confirmation email for new signups
-    if (result.rowCount > 0 && resend) {
-      resend.emails.send({
-        from: FROM_EMAIL,
-        to: cleanEmail,
-        subject: "You're on the Billably waitlist",
-        html: `
-          <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px; color: #1a1a2e;">
-            <p style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">billably</p>
-            <p style="font-size: 16px; font-weight: 600; margin: 0 0 20px; color: #1a1a2e;">You're on the list, ${cleanName}.</p>
-            <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 20px;">
-              Thanks for signing up for early access to Billably — AI-powered legal operations for founders.
-              We'll reach out as we open up spots.
-            </p>
-            <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0;">
-              — The Billably team
-            </p>
-          </div>
-        `,
+    if (result.rowCount > 0 && RESEND_API_KEY) {
+      fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: FROM_EMAIL,
+          to: cleanEmail,
+          subject: "You're on the Billably waitlist",
+          html: `
+            <div style="font-family: sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 24px; color: #1a1a2e;">
+              <p style="font-size: 22px; font-weight: 700; margin: 0 0 8px;">billably</p>
+              <p style="font-size: 16px; font-weight: 600; margin: 0 0 20px; color: #1a1a2e;">You're on the list, ${cleanName}.</p>
+              <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0 0 20px;">
+                Thanks for signing up for early access to Billably — AI-powered legal operations for founders.
+                We'll reach out as we open up spots.
+              </p>
+              <p style="font-size: 15px; color: #555; line-height: 1.6; margin: 0;">
+                — The Billably team
+              </p>
+            </div>
+          `,
+        }),
       }).catch(err => console.error('Resend error:', err))
     }
 
