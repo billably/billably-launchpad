@@ -27,12 +27,35 @@ const pool = new Pool({
 })
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY || ''
-const FROM_EMAIL = process.env.FROM_EMAIL || 'Billably <onboarding@resend.dev>'
+const FROM_EMAIL = process.env.FROM_EMAIL || 'Billably <hello@billably.ai>'
+const NOTIFY_EMAILS = ['kalpana@billably.io', 'jose@billably.io']
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
+// Simple in-memory rate limiter: max 3 submissions per IP per minute
+const rateLimitMap = new Map()
+function isRateLimited(ip) {
+  const now = Date.now()
+  const entry = rateLimitMap.get(ip)
+  if (!entry || now > entry.reset) {
+    rateLimitMap.set(ip, { count: 1, reset: now + 60_000 })
+    return false
+  }
+  if (entry.count >= 3) return true
+  entry.count++
+  return false
+}
+
 app.post('/waitlist', async (req, res) => {
-  const { name, email, company, website, stage } = req.body ?? {}
+  const { name, email, company, website, stage, _trap } = req.body ?? {}
+
+  // Honeypot check — bots fill this, humans don't
+  if (_trap) return res.json({ ok: true })
+
+  const ip = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket.remoteAddress
+  if (isRateLimited(ip)) {
+    return res.status(429).json({ error: 'Too many requests. Please try again later.' })
+  }
 
   if (!name?.trim() || !email?.trim() || !company?.trim() || !stage) {
     return res.status(400).json({ error: 'Missing required fields' })
@@ -84,9 +107,41 @@ app.post('/waitlist', async (req, res) => {
         })
         if (!emailRes.ok) {
           const body = await emailRes.text()
-          console.error('Resend error:', emailRes.status, body)
+          console.error('Resend confirmation error:', emailRes.status, body)
         } else {
           console.log('Confirmation email sent to', cleanEmail)
+        }
+
+        // Internal notification
+        const notifyRes = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: FROM_EMAIL,
+            to: NOTIFY_EMAILS,
+            subject: `New waitlist signup: ${cleanName} (${company.trim()})`,
+            html: `
+              <div style="font-family: sans-serif; max-width: 480px; padding: 32px 24px; color: #1a1a2e;">
+                <p style="font-size: 18px; font-weight: 700; margin: 0 0 16px;">New waitlist signup</p>
+                <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+                  <tr><td style="padding: 6px 0; color: #555; width: 100px;">Name</td><td style="padding: 6px 0; font-weight: 600;">${cleanName}</td></tr>
+                  <tr><td style="padding: 6px 0; color: #555;">Email</td><td style="padding: 6px 0;">${cleanEmail}</td></tr>
+                  <tr><td style="padding: 6px 0; color: #555;">Company</td><td style="padding: 6px 0;">${company.trim()}</td></tr>
+                  <tr><td style="padding: 6px 0; color: #555;">Website</td><td style="padding: 6px 0;">${website?.trim() || '—'}</td></tr>
+                  <tr><td style="padding: 6px 0; color: #555;">Stage</td><td style="padding: 6px 0;">${stage}</td></tr>
+                </table>
+              </div>
+            `,
+          }),
+        })
+        if (!notifyRes.ok) {
+          const body = await notifyRes.text()
+          console.error('Resend notify error:', notifyRes.status, body)
+        } else {
+          console.log('Notification sent to', NOTIFY_EMAILS.join(', '))
         }
       } catch (err) {
         console.error('Resend fetch error:', err)

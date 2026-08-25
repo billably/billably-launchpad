@@ -24,6 +24,7 @@ const WaitlistForm = () => {
     company: "",
     website: "",
     stage: "",
+    _trap: "",
   });
 
   const validate = () => {
@@ -99,6 +100,17 @@ const WaitlistForm = () => {
         </div>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+          {/* honeypot — hidden from real users, bots fill it in */}
+          <input
+            type="text"
+            name="_trap"
+            value={form._trap}
+            onChange={(e) => update("_trap", e.target.value)}
+            tabIndex={-1}
+            autoComplete="off"
+            aria-hidden="true"
+            style={{ display: "none" }}
+          />
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-5 gap-y-6">
             <div className="space-y-1.5">
               <Label htmlFor="name" className="uppercase text-xs tracking-wider text-muted-foreground font-semibold font-heading">

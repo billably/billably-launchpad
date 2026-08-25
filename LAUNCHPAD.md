@@ -2,7 +2,7 @@
 
 Marketing and waitlist site for Billably — AI-powered legal operations for founders.
 
-Live: TBD (currently localhost only)
+Live: https://billably.ai (Netlify) | billably.io → redirects to billably.ai
 
 ---
 
@@ -26,7 +26,8 @@ Single-page marketing site with three rotating feature previews and a waitlist s
 | Frontend | Vite + React + shadcn/ui, static build in `dist/` |
 | API | `api/` — minimal Express + pg service, deployed to Cloud Run (`billably-waitlist-api`) |
 | Database | `identity.waitlist_signups` in Cloud SQL (`billably-prod`, `us-west1`) |
-| Email | Resend — confirmation email on new signup (see TODOs) |
+| Email | Resend — confirmation to signup + internal notification to kalpana@billably.io and jose@billably.io |
+| Hosting | Netlify (static), custom domain billably.ai; billably.io → 301 redirect via GoDaddy |
 
 **API service URL**: `https://billably-waitlist-api-179064079261.us-west1.run.app`
 
@@ -46,8 +47,43 @@ echo "VITE_WAITLIST_API_URL=https://billably-waitlist-api-179064079261.us-west1.
 
 ---
 
+## Bot protection
+
+Two layers, no user friction:
+
+- **Honeypot field** (`_trap`) — hidden input in the form. If filled (bots do this), the server silently returns 200 and discards the submission.
+- **Rate limiting** — max 3 submissions per IP per minute in the API. Returns 429 if exceeded.
+
+---
+
+## Email
+
+On every new signup the API sends two emails via Resend:
+
+1. **Confirmation** to the person who signed up — from `hello@billably.ai`
+2. **Internal notification** to `kalpana@billably.io` and `jose@billably.io` with full signup details
+
+Duplicate signups (same email) are silently ignored — no DB insert, no email.
+
+Relevant env vars on the Cloud Run service:
+- `RESEND_API_KEY` — Resend API key
+- `FROM_EMAIL` — sender address (default: `Billably <hello@billably.ai>`)
+
+---
+
+## DNS / Hosting
+
+| Domain | Where |
+|---|---|
+| `billably.ai` | Netlify (A record → 75.2.60.5, www CNAME → cozy-mermaid-c4c8b6.netlify.app) |
+| `billably.io` | GoDaddy permanent 301 → https://billably.ai |
+
+`hello@billably.ai` is a Google Workspace User Alias Domain — delivers to the billably.io inbox.
+
+---
+
 ## TODOs
 
-- [ ] **Fix Resend** — confirmation email is implemented (`api/index.js`) but not delivering. Likely cause: `onboarding@resend.dev` sender only delivers to the Resend account owner's email. Fix: verify `billably.io` in Resend (Settings → Domains), then set `FROM_EMAIL=Billably <hello@billably.io>` in the Cloud Run env and redeploy the API.
-- [ ] **Deploy to billably.io** — host the static build on Netlify (or equivalent). Connect GitHub repo, set `VITE_WAITLIST_API_URL` as a build env var, add `billably.io` as the custom domain, update DNS at registrar.
-- [ ] **Redirect billably.ai → billably.io** — either add `billably.ai` as a domain alias in Netlify with a 301 redirect, or configure a URL redirect at the billably.ai registrar directly.
+- [x] **Verify Resend delivery** — confirmed end-to-end: confirmation sent to signup, internal notification to kalpana + jose.
+- [x] **Rebuild + redeploy frontend** — honeypot field live in production bundle.
+- [x] **Verify billably.io 301** — confirmed redirect to billably.ai.
