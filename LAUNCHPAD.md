@@ -2,7 +2,7 @@
 
 Marketing and waitlist site for Billably — AI-powered legal operations for founders.
 
-Live: https://billably.ai (Netlify) | billably.io → redirects to billably.ai
+Live: https://billably.ai (Cloudflare Workers) | billably.io → redirects to billably.ai
 
 ---
 
@@ -27,7 +27,7 @@ Single-page marketing site with three rotating feature previews and a waitlist s
 | API | `api/` — minimal Express + pg service, deployed to Cloud Run (`billably-waitlist-api`) |
 | Database | `identity.waitlist_signups` in Cloud SQL (`billably-prod`, `us-west1`) |
 | Email | Resend — confirmation to signup + internal notification to kalpana@billably.io and jose@billably.io |
-| Hosting | Netlify (static), custom domain billably.ai; billably.io → 301 redirect via GoDaddy |
+| Hosting | Cloudflare Workers (static assets via `wrangler.toml`), custom domain billably.ai; auto-deploys on push to main |
 
 **API service URL**: `https://billably-waitlist-api-179064079261.us-west1.run.app`
 
@@ -75,8 +75,18 @@ Relevant env vars on the Cloud Run service:
 
 | Domain | Where |
 |---|---|
-| `billably.ai` | Netlify (A record → 75.2.60.5, www CNAME → cozy-mermaid-c4c8b6.netlify.app) |
+| `billably.ai` | Cloudflare Workers (`billably-launchpad` worker, `wrangler.toml` serves `dist/`) |
 | `billably.io` | GoDaddy permanent 301 → https://billably.ai |
+
+**DNS**: Cloudflare is the authoritative nameserver for billably.ai (nameservers changed from GoDaddy to Cloudflare). GoDaddy remains the registrar.
+
+**Deploying**: push to `main` — Cloudflare builds and deploys automatically. No Docker, no manual steps.
+
+```bash
+# To deploy manually from the API directory:
+gcloud run deploy billably-waitlist-api --source . --region us-west1 \
+  --update-env-vars "FROM_EMAIL=Billably <hello@billably.ai>,RESEND_API_KEY=..."
+```
 
 `hello@billably.ai` is a Google Workspace User Alias Domain — delivers to the billably.io inbox.
 
