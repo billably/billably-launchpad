@@ -10,7 +10,7 @@ Live: https://billably.ai (Cloudflare Workers) | billably.io → redirects to bi
 
 Single-page marketing site with three rotating feature previews and a waitlist signup form.
 
-**Feature carousel** (auto-rotates every 4 seconds):
+**Feature carousel** (auto-rotates every 7 seconds, `embla-carousel-autoplay`):
 - **Bill Analysis** — flags inflated time entries, surfaces savings opportunities, generates pushback language
 - **Compliance Timeline** — personalized roadmap of upcoming legal deadlines with cost estimates and counsel connections
 - **Counsel Marketplace** — vetted firm recommendations matched to company stage and matter type
