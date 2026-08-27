@@ -4,7 +4,7 @@ import { BillAnalysisCard, TimelineCard, CounselCard } from "./FeatureCards";
 
 const FeatureCarousel = () => {
   const [emblaRef] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 4000, stopOnInteraction: false }),
+    Autoplay({ delay: 7000, stopOnInteraction: false }),
   ]);
 
   const cards = [
